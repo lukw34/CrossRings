@@ -78,7 +78,8 @@ class StartPage extends React.Component {
     }
 
     renderScene() {
-        const {userName} = this.state;
+        const {userName} = this.state,
+            isDisabled = userName.length === 0;
         return (
             <View style={{flex: 10,
                 alignItems: 'stretch',
@@ -94,12 +95,14 @@ class StartPage extends React.Component {
                 <TextInput
                     onChangeText={this.handleInputText.bind(this)}
                     value={userName}
+                    placeholder="Enter your name"
                     style={{
                         marginBottom: 20,
-                        fontSize: 25
+                        fontSize: 22
                     }}
                 />
                 <Button
+                    disabled={isDisabled}
                     title="Let's play"
                     onPress={this.goToLoadingPage.bind(this)}
                 />

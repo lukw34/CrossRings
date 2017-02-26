@@ -2,7 +2,9 @@ import React from 'react';
 import {
     ActivityIndicator,
     Navigator,
-    StyleSheet
+    StyleSheet,
+    View,
+    Text
 } from 'react-native';
 import {PLAYGROUND_PAGE} from  '../Pages';
 
@@ -51,11 +53,23 @@ class LoadingPage extends React.Component {
     renderScene() {
         const {isLoading} = this.state;
         return (
-            <ActivityIndicator
-                animating={isLoading}
-                style={[styles.centering, {height: 120}]}
-                size="large"
-            />
+            <View style={{
+                flex: 10,
+                justifyContent: 'center'
+            }}>
+                <Text style={{
+                    fontSize: 18,
+                    color: 'black',
+                    alignSelf: 'center'
+                }}>
+                    We try to find brave enough opponent!
+                </Text>
+                <ActivityIndicator
+                    animating={isLoading}
+                    style={[styles.centering, {height: 200}]}
+                    size={120}
+                />
+            </View>
         )
     }
 }
