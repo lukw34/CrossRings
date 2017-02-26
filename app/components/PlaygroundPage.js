@@ -5,6 +5,8 @@ import {
     Navigator
 } from 'react-native';
 
+import Playground from './Playground';
+
 class PlaygroundPage extends React.Component {
     constructor(props) {
         super(props);
@@ -24,7 +26,7 @@ class PlaygroundPage extends React.Component {
     renderScene() {
         return (
             <View>
-                <Text>Playground</Text>
+                <Playground size={3}/>
             </View>
         )
     }

@@ -20,6 +20,7 @@ class App extends Component {
             <Navigator
                 initialRoute={{id: START_PAGE, name: START_PAGE}}
                 renderScene={this.renderScene}
+                configureScene={() => ({...Navigator.SceneConfigs.HorizontalSwipeJumpFromRight, gestures: {pop: {}}})}
             />
         );
     }

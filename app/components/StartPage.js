@@ -35,15 +35,6 @@ class StartPage extends React.Component {
         });
     }
 
-    render() {
-        return (
-            <Navigator
-                renderScene={this.renderScene}
-                navigator={this.props.navigator}
-            />
-        );
-    }
-
     getInitUserName() {
         try {
             AsyncStorage.getItem(this.myNameKey).then(value => {
@@ -107,6 +98,15 @@ class StartPage extends React.Component {
                     onPress={this.goToLoadingPage.bind(this)}
                 />
             </View>
+        );
+    }
+
+    render() {
+        return (
+            <Navigator
+                renderScene={this.renderScene}
+                navigator={this.props.navigator}
+            />
         );
     }
 }
