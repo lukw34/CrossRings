@@ -21,10 +21,7 @@ class Playground extends React.Component {
             cellSize = width / size,
             boardSize = size * size;
 
-        console.log(size);
-        console.log(width);
         for (let index = 0; index < boardSize; index++) {
-            console.log('push');
             cells.push(<Cell key={index} cellSize={cellSize}/>)
         }
 
@@ -39,7 +36,7 @@ class Playground extends React.Component {
             <View style={{flex: 0, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}>
                 {cells}
             </View>
-        )
+        );
     }
 }
 

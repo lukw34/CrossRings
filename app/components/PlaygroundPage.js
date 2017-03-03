@@ -24,11 +24,14 @@ class PlaygroundPage extends React.Component {
     }
 
     renderScene() {
+        const {gameData} = this.props,
+            {me} = gameData;
         return (
             <View>
                 <Playground size={3}/>
+                <Text>{me.name}</Text>
             </View>
-        )
+        );
     }
 }
 

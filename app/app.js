@@ -28,6 +28,7 @@ class App extends Component {
     renderScene(route, navigator) {
         const {id} = route,
             props = {
+                ...route,
                 navigator
             };
         console.log(route.id);

@@ -38,7 +38,6 @@ class StartPage extends React.Component {
     getInitUserName() {
         try {
             AsyncStorage.getItem(this.myNameKey).then(value => {
-                console.log(value);
                 if(value !== null) {
                     this.setState({
                         userName: value
@@ -60,11 +59,13 @@ class StartPage extends React.Component {
     }
 
     goToLoadingPage() {
-        const {navigator}  = this.props;
+        const {navigator}  = this.props,
+            {userName} = this.state;
         this.saveUserName();
         navigator.push({
             id: LOADING_PAGE,
             name: LOADING_PAGE,
+            userName
         })
     }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import SocketIOClient from 'socket.io-client';
 import {
     ActivityIndicator,
     Navigator,
@@ -7,6 +8,7 @@ import {
     Text
 } from 'react-native';
 import {PLAYGROUND_PAGE} from  '../Pages';
+import {API} from '../config';
 
 const styles = StyleSheet.create({
     centering: {alignItems: 'center', justifyContent: 'center', padding: 8,}
@@ -19,6 +21,8 @@ class LoadingPage extends React.Component {
             isLoading: true
         };
 
+        this.socket = SocketIOClient(API);
+
         this.findPlayer = this.findPlayer.bind(this);
         this.renderScene = this.renderScene.bind(this);
     }
@@ -28,15 +32,21 @@ class LoadingPage extends React.Component {
     }
 
     findPlayer() {
-        const {navigator} = this.props;
-        setTimeout(() => {
+        const {navigator, userName} = this.props;
+        this.socket.emit('get-game', {name: userName});
+        this.socket.on('game-ready', gameData => {
             this.setState({
                 isLoading: false
             });
             navigator.push({
                 id: PLAYGROUND_PAGE,
-                name: PLAYGROUND_PAGE
-            })
+                name: PLAYGROUND_PAGE,
+                socket: this.socket,
+                gameData
+            });
+        });
+        setTimeout(() => {
+
         }, 10000)
     }
 
@@ -70,7 +80,7 @@ class LoadingPage extends React.Component {
                     size={120}
                 />
             </View>
-        )
+        );
     }
 }
 
