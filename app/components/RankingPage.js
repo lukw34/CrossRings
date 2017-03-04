@@ -29,6 +29,7 @@ class RankingPage extends React.Component {
         this.renderScene = this.renderScene.bind(this);
         this._renderSeparator = this._renderSeparator.bind(this);
         this._renderRow = this._renderRow.bind(this);
+        this._noEffect = this._noEffect.bind(this);
     }
 
     componentDidMount() {
@@ -113,18 +114,22 @@ class RankingPage extends React.Component {
             <View style={{
                 flexWrap: 'wrap', flexDirection: 'row'
             }}>
-                <Button disabled={true} color="#fff" title={`${rowData.position.toString()}`}/>
+                <Button onPress={this._noEffect} disabled={true} color="#fff" title={`${rowData.position.toString()}`}/>
                 <View style={{
                     flex: 10,
                     alignItems: 'stretch',
                     justifyContent: 'center',
                     padding: 10
                 }}>
-                    <Button title={rowData.name}/>
-                    <Button title={`Points: ${rowData.points.toString()}`}/>
+                    <Button onPress={this._noEffect} title={rowData.name}/>
+                    <Button onPress={this._noEffect} title={`Points: ${rowData.points.toString()}`}/>
                 </View>
             </View>
         );
+    }
+
+    _noEffect() {
+
     }
 }
 

@@ -3,11 +3,12 @@ import {
     Navigator
 } from 'react-native';
 
-import {START_PAGE, LOADING_PAGE, PLAYGROUND_PAGE, RANKING_PAGE} from './Pages';
+import {START_PAGE, LOADING_PAGE, PLAYGROUND_PAGE, RANKING_PAGE, RESULT_PAGE} from './Pages';
 import StartPage from './components/StartPage'
 import LoadingPage from './components/LoadingPage';
 import PlaygroundPage from './components/PlaygroundPage';
 import RankingPage from './components/RankingPage';
+import ResultPage from './components/ResultPage';
 
 class App extends Component {
     constructor(props) {
@@ -32,7 +33,6 @@ class App extends Component {
                 navigator
             };
 
-        console.log(id);
         switch (id) {
             case START_PAGE:
                 return <StartPage {...props}/>;
@@ -41,7 +41,9 @@ class App extends Component {
             case PLAYGROUND_PAGE:
                 return <PlaygroundPage {...props}/>;
             case RANKING_PAGE:
-                return <RankingPage {...props} />
+                return <RankingPage {...props}/>;
+            case RESULT_PAGE:
+                return <ResultPage {...props}/>;
             default:
                 return <StartPage {...props}/>;
         }

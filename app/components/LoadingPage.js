@@ -7,6 +7,8 @@ import {
     View,
     Text,
     Vibration,
+    AsyncStorage
+
 } from 'react-native';
 import {PLAYGROUND_PAGE} from  '../Pages';
 import {API} from '../config';
@@ -22,19 +24,30 @@ class LoadingPage extends React.Component {
             isLoading: true
         };
 
-        this.socket = SocketIOClient(API);
-
+        this.socket = SocketIOClient(API, {jsonp: false});
+        this.myNameKey = '@MyName:key';
         this.findPlayer = this.findPlayer.bind(this);
         this.renderScene = this.renderScene.bind(this);
     }
 
     componentDidMount() {
-        this.findPlayer();
+        const {userName} = this.props;
+        if (!userName) {
+            try {
+                AsyncStorage.getItem(this.myNameKey).then(value => {
+                    this.findPlayer(value !== null ? value : 'Anonim');
+                });
+            } catch (e) {
+                //Error retrieving data
+            }
+        } else {
+            this.findPlayer(userName);
+        }
     }
 
-    findPlayer() {
+    findPlayer(name) {
         const {navigator, userName} = this.props;
-        setTimeout(() => this.socket.emit('get-game', {name: userName}), 1000);
+        setTimeout(() => this.socket.emit('get-game', {name}), 1000);
         this.socket.on('game-ready', gameData => {
             this.setState({
                 isLoading: false
@@ -47,10 +60,22 @@ class LoadingPage extends React.Component {
                 gameData
             });
         });
-        setTimeout(() => {
-
-        }, 10000)
     }
+
+    getInitUserName() {
+        try {
+            AsyncStorage.getItem(this.myNameKey).then(value => {
+                if (value !== null) {
+                    this.setState({
+                        userName: value
+                    });
+                }
+            });
+        } catch (e) {
+            //Error retrieving data
+        }
+    }
+
 
     render() {
         const {navigator} = this.props;

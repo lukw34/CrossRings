@@ -9,8 +9,6 @@ import {
     Text
 } from 'react-native';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
-
 import {LOADING_PAGE, RANKING_PAGE} from '../Pages';
 
 class StartPage extends React.Component {
