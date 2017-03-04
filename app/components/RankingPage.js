@@ -81,11 +81,14 @@ class RankingPage extends React.Component {
         return (
             <View style={{marginTop: 60}}>
                 <View style={{
-                    justifyContent: 'center'
+                    marginTop: -50,
+                    justifyContent: 'center',
+                    alignSelf: 'center',
+                    position: 'absolute'
                 }}>
                     <ActivityIndicator
                         animating={isLoading}
-                        style={[styles.centering, {height: 200, position: 'absolute'}]}
+                        style={[styles.centering, {height: 200}]}
                         size={30}
                     />
                 </View>
@@ -107,7 +110,9 @@ class RankingPage extends React.Component {
 
     _renderRow(rowData) {
         return (
-            <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
+            <View style={{
+                flexWrap: 'wrap', flexDirection: 'row'
+            }}>
                 <Button disabled={true} color="#fff" title={`${rowData.position.toString()}`}/>
                 <View style={{
                     flex: 10,
