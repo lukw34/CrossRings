@@ -2,21 +2,33 @@ import React from 'react';
 import {
     View,
     Text,
-    Navigator
+    Navigator,
+    Vibration,
+    Button
 } from 'react-native';
 
 import Playground from './Playground';
-import {RESULT_PAGE} from '../Pages';
+import TurnInfo from './TurnInfo';
+
+import {RESULT_PAGE, START_PAGE} from '../Pages';
 
 class PlaygroundPage extends React.Component {
     constructor(props) {
         super(props);
         this.renderScene = this.renderScene.bind(this);
         this.goToResultPage = this.goToResultPage.bind(this);
+        this.handleResign = this.handleResign.bind(this);
+        this.state = {
+            fields: [],
+            actualPlayerId: -1
+        };
     }
 
     componentDidMount() {
-        const {socket} = this.props;
+        const {socket, firstPlayer} = this.props;
+        this.setState({
+            actualPlayerId: firstPlayer
+        });
         socket.on('result-winner', () => {
             this.goToResultPage({
                 color: '#388E3C',
@@ -52,14 +64,35 @@ class PlaygroundPage extends React.Component {
                 icon: 'thumbs-up'
             });
         });
+
+        socket.on('next-turn', ({fields, playerId}) => {
+            const {me} = this.props;
+            if(me.id === playerId) {
+                Vibration.vibrate();
+            }
+
+            this.setState({
+                fields,
+                actualPlayerId: playerId
+            })
+        });
     }
 
     goToResultPage(props) {
-        const {navigator, socket} = this.props;
+        const {navigator} = this.props;
         navigator.push({
             id: RESULT_PAGE,
             name: RESULT_PAGE,
             ...props
+        });
+    }
+
+    handleResign() {
+        const {socket, navigator} = this.props;
+        socket.disconnect();
+        navigator.push({
+            id: START_PAGE,
+            name: START_PAGE
         });
     }
 
@@ -74,12 +107,21 @@ class PlaygroundPage extends React.Component {
     }
 
     renderScene() {
-        const {gameData} = this.props,
-            {me} = gameData;
+        const {me, opponents} = this.props,
+            {actualPlayerId} = this.state;
+
         return (
             <View>
-                <Playground size={3}/>
-                <Text>{me.name}</Text>
+                <View>
+                    <Playground size={3}/>
+                </View>
+                <View style={{
+                    marginBottom: 20,
+                    marginTop: 30
+                }}>
+                    <TurnInfo me={me} opponent={opponents[0]} playerId={actualPlayerId}/>
+                </View>
+                <Button color="#C62828" title="Resign" onPress={this.handleResign}/>
             </View>
         );
     }

@@ -46,7 +46,7 @@ class LoadingPage extends React.Component {
     }
 
     findPlayer(name) {
-        const {navigator, userName} = this.props;
+        const {navigator} = this.props;
         setTimeout(() => this.socket.emit('get-game', {name}), 1000);
         this.socket.on('game-ready', gameData => {
             this.setState({
@@ -57,25 +57,10 @@ class LoadingPage extends React.Component {
                 id: PLAYGROUND_PAGE,
                 name: PLAYGROUND_PAGE,
                 socket: this.socket,
-                gameData
+                ...gameData
             });
         });
     }
-
-    getInitUserName() {
-        try {
-            AsyncStorage.getItem(this.myNameKey).then(value => {
-                if (value !== null) {
-                    this.setState({
-                        userName: value
-                    });
-                }
-            });
-        } catch (e) {
-            //Error retrieving data
-        }
-    }
-
 
     render() {
         const {navigator} = this.props;
