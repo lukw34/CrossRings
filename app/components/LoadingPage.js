@@ -33,7 +33,7 @@ class LoadingPage extends React.Component {
 
     findPlayer() {
         const {navigator, userName} = this.props;
-        this.socket.emit('get-game', {name: userName});
+        setTimeout(() => this.socket.emit('get-game', {name: userName}), 1000);
         this.socket.on('game-ready', gameData => {
             this.setState({
                 isLoading: false

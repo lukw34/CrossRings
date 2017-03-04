@@ -5,10 +5,13 @@ import {
     Navigator,
     TextInput,
     Image,
-    AsyncStorage
+    AsyncStorage,
+    Text
 } from 'react-native';
 
-import {LOADING_PAGE} from '../Pages';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+import {LOADING_PAGE, RANKING_PAGE} from '../Pages';
 
 class StartPage extends React.Component {
     constructor(props) {
@@ -38,7 +41,7 @@ class StartPage extends React.Component {
     getInitUserName() {
         try {
             AsyncStorage.getItem(this.myNameKey).then(value => {
-                if(value !== null) {
+                if (value !== null) {
                     this.setState({
                         userName: value
                     });
@@ -53,7 +56,7 @@ class StartPage extends React.Component {
         try {
             const {userName} = this.state;
             AsyncStorage.setItem(this.myNameKey, userName);
-        } catch(error) {
+        } catch (error) {
             //error
         }
     }
@@ -69,11 +72,20 @@ class StartPage extends React.Component {
         })
     }
 
+    goToRankingPage() {
+        const {navigator}  = this.props;
+        navigator.push({
+            id: RANKING_PAGE,
+            name: RANKING_PAGE
+        })
+    }
+
     renderScene() {
         const {userName} = this.state,
             isDisabled = userName.length === 0;
         return (
-            <View style={{flex: 10,
+            <View style={{
+                flex: 10,
                 alignItems: 'stretch',
                 justifyContent: 'center',
                 padding: 10
@@ -93,11 +105,19 @@ class StartPage extends React.Component {
                         fontSize: 22
                     }}
                 />
+
                 <Button
-                    disabled={isDisabled}
                     title="Let's play"
+                    disabled={isDisabled}
                     onPress={this.goToLoadingPage.bind(this)}
                 />
+
+                <View style={{marginTop: 14}}>
+                    <Button
+                        title="Rankings"
+                        onPress={this.goToRankingPage.bind(this)}
+                    />
+                </View>
             </View>
         );
     }
