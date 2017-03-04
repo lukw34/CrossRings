@@ -5,4 +5,4 @@ import {
 
 import App from './app/app';
 
-AppRegistry.registerComponent('MyFirstApp', () => App);
+AppRegistry.registerComponent('CrossRings', () => App);

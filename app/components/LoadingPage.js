@@ -1,15 +1,20 @@
 import React from 'react';
+import SocketIOClient from 'socket.io-client';
 import {
     ActivityIndicator,
     Navigator,
     StyleSheet,
     View,
-    Text
+    Text,
+    Vibration,
+    AsyncStorage
+
 } from 'react-native';
 import {PLAYGROUND_PAGE} from  '../Pages';
+import {API} from '../config';
 
 const styles = StyleSheet.create({
-    centering: {alignItems: 'center', justifyContent: 'center', padding: 8,}
+    centering: {alignItems: 'center', justifyContent: 'center', padding: 8}
 });
 
 class LoadingPage extends React.Component {
@@ -19,25 +24,42 @@ class LoadingPage extends React.Component {
             isLoading: true
         };
 
+        this.socket = SocketIOClient(API, {jsonp: false});
+        this.myNameKey = '@MyName:key';
         this.findPlayer = this.findPlayer.bind(this);
         this.renderScene = this.renderScene.bind(this);
     }
 
     componentDidMount() {
-        this.findPlayer();
+        const {userName} = this.props;
+        if (!userName) {
+            try {
+                AsyncStorage.getItem(this.myNameKey).then(value => {
+                    this.findPlayer(value !== null ? value : 'Anonim');
+                });
+            } catch (e) {
+                //Error retrieving data
+            }
+        } else {
+            this.findPlayer(userName);
+        }
     }
 
-    findPlayer() {
+    findPlayer(name) {
         const {navigator} = this.props;
-        setTimeout(() => {
+        setTimeout(() => this.socket.emit('get-game', {name}), 1000);
+        this.socket.on('game-ready', gameData => {
             this.setState({
                 isLoading: false
             });
+            Vibration.vibrate();
             navigator.push({
                 id: PLAYGROUND_PAGE,
-                name: PLAYGROUND_PAGE
-            })
-        }, 10000)
+                name: PLAYGROUND_PAGE,
+                socket: this.socket,
+                ...gameData
+            });
+        });
     }
 
     render() {
@@ -70,7 +92,7 @@ class LoadingPage extends React.Component {
                     size={120}
                 />
             </View>
-        )
+        );
     }
 }
 
