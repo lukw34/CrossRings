@@ -121,7 +121,7 @@ class RankingPage extends React.Component {
                     justifyContent: 'center',
                     padding: 10
                 }}>
-                    <Button onPress={this._noEffect} title={rowData.name}/>
+                    <Button onPress={this._noEffect} title={rowData.name || '(Unknown)'}/>
                     <Button onPress={this._noEffect} title={`Points: ${rowData.points.toString()}`}/>
                 </View>
             </View>
