@@ -21,7 +21,6 @@ class Cell extends React.Component {
                     margin: 3
                 }}/>
             </TouchableWithoutFeedback>
-
         )
     }
 }

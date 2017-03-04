@@ -13,6 +13,13 @@ class PlaygroundPage extends React.Component {
         this.renderScene = this.renderScene.bind(this);
     }
 
+    componentDidMount() {
+        const {socket} = this.props;
+        socket.on('result-winner', () => {
+
+        });
+    }
+
     render() {
         const {navigator} = this.props;
         return (

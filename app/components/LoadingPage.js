@@ -5,13 +5,14 @@ import {
     Navigator,
     StyleSheet,
     View,
-    Text
+    Text,
+    Vibration,
 } from 'react-native';
 import {PLAYGROUND_PAGE} from  '../Pages';
 import {API} from '../config';
 
 const styles = StyleSheet.create({
-    centering: {alignItems: 'center', justifyContent: 'center', padding: 8,}
+    centering: {alignItems: 'center', justifyContent: 'center', padding: 8}
 });
 
 class LoadingPage extends React.Component {
@@ -38,6 +39,7 @@ class LoadingPage extends React.Component {
             this.setState({
                 isLoading: false
             });
+            Vibration.vibrate();
             navigator.push({
                 id: PLAYGROUND_PAGE,
                 name: PLAYGROUND_PAGE,
