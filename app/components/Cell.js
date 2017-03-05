@@ -10,17 +10,18 @@ class Cell extends React.Component {
         console.log(cellSize);
         return (
 
-            <TouchableWithoutFeedback >
-                <View style={{
-                    height: cellSize,
-                    width: cellSize - 10,
+            <View style={{height: cellSize, width: cellSize - 10, left:7, margin:3}}>
+                <TouchableWithoutFeedback >
+                    <View style={{
+                    height: cellSize - 20,
+                    width: cellSize - 25,
                     backgroundColor: 'blue',
                     borderColor: '#000000',
                     borderRadius: 10,
-                    borderWidth: 2,
-                    margin: 3
+                    borderWidth: 2
                 }}/>
-            </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback>
+            </View>
 
         )
     }
