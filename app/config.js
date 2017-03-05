@@ -1,1 +1,1 @@
-export const API = 'http://192.168.0.4:9004';
+export const API = 'http://138.197.33.152:9004';

@@ -7,7 +7,6 @@ import {
 
 import Cell from './Cell';
 
-
 class Playground extends React.Component {
     constructor(props) {
         super(props);
@@ -50,7 +49,6 @@ class Playground extends React.Component {
             <View style={{flex: 0, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', top: 11}}>
                 {cells}
             </View>
-
         )
     }
 }
