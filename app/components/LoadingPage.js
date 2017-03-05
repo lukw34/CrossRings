@@ -1,5 +1,5 @@
 import React from 'react';
-import SocketIOClient from 'socket.io-client';
+import SocketIOClient from 'socket.io-client/dist/socket.io';
 import {
     ActivityIndicator,
     Navigator,
