@@ -59,7 +59,7 @@ class PlaygroundPage extends React.Component {
         socket.on('player-disconnect', () => {
             this.goToResultPage({
                 color: '#9E9E9E',
-                information: 'Your opponent are too weak!',
+                information: 'Your opponent was too weak!',
                 againButtonText: 'Try to find another one',
                 icon: 'thumbs-up'
             });
