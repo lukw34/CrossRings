@@ -7,6 +7,7 @@ import {
     Button
 } from 'react-native';
 
+
 import Playground from './Playground';
 import TurnInfo from './TurnInfo';
 
@@ -18,9 +19,10 @@ class PlaygroundPage extends React.Component {
         this.renderScene = this.renderScene.bind(this);
         this.goToResultPage = this.goToResultPage.bind(this);
         this.handleResign = this.handleResign.bind(this);
+        this.onCellClick = this.onCellClick.bind(this);
         this.state = {
-            fields: [],
-            actualPlayerId: -1
+            actualPlayerId: -1,
+            fields: []
         };
     }
 
@@ -67,7 +69,7 @@ class PlaygroundPage extends React.Component {
 
         socket.on('next-turn', ({fields, playerId}) => {
             const {me} = this.props;
-            if(me.id === playerId) {
+            if (me.id === playerId) {
                 Vibration.vibrate();
             }
 
@@ -76,6 +78,26 @@ class PlaygroundPage extends React.Component {
                 actualPlayerId: playerId
             })
         });
+    }
+
+    onCellClick(key) {
+        const {fields, actualPlayerId} = this.state,
+            {me, socket} = this.props,
+            {id} = me,
+            isMyTurn = me.id === actualPlayerId;
+        if (isMyTurn) {
+            const newFields = [...fields, {key, playerId: id}];
+            this.setState({
+                fields: newFields
+            });
+
+            if (fields.length >= 8) {
+                socket.emit('completed-draw');
+            } else {
+                //TODO tu dodaj logike
+                socket.emit('turn-completed', {fields: newFields});
+            }
+        }
     }
 
     goToResultPage(props) {
@@ -108,12 +130,12 @@ class PlaygroundPage extends React.Component {
 
     renderScene() {
         const {me, opponents} = this.props,
-            {actualPlayerId} = this.state;
+            {actualPlayerId, fields} = this.state;
 
         return (
             <View>
-                <View>
-                    <Playground size={3}/>
+                <View >
+                    <Playground onCellClick={this.onCellClick} fields={fields} size={3}/>
                 </View>
                 <View style={{
                     marginBottom: 20,
