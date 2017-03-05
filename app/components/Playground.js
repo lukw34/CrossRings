@@ -7,6 +7,8 @@ import {
 
 import Cell from './Cell';
 
+const {width, height} = Dimensions.get('window');
+
 class Playground extends React.Component {
     constructor(props) {
         super(props);
@@ -18,10 +20,8 @@ class Playground extends React.Component {
     componentWillMount() {
         const {size} = this.props,
             cells = [],
-            {width} = Dimensions.get('window'),
             cellSize = width / size,
             boardSize = size * size;
-
         console.log(size);
         console.log(width);
         for (let index = 0; index < boardSize; index++) {
@@ -38,35 +38,29 @@ class Playground extends React.Component {
         const {cells} = this.state;
         return (
 
-            <View>
-                <View style={[styleSheet.lineX, {
-                    transform:[
-                        {translateX: 125}]}
-                        ]
-                    }
-                />
-                <View style={[styleSheet.lineX, {
-                    transform:[
-                        {translateX: 250}]}
-                        ]
-                    }
-                />
-                <View style={[styleSheet.lineY, {
-                    transform:[
-                        {translateY: 130}]}
-                        ]
-                    }
-                />
-                <View style={[styleSheet.lineY, {
-                    transform:[
-                        {translateY: 265}]}
-                        ]
-                    }
-                />
                 <View style={{flex: 0, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', top: 11}}>
                     {cells}
+                    <View style={[styleSheet.lineX, { height: height/1.6,
+                    transform:[
+                        {translateX: height/5}]}
+                        ]}
+                    />
+                    <View style={[styleSheet.lineX, { height: height/1.6,
+                    transform:[
+                        {translateX: height/2.45}]}
+                        ]}
+                    />
+                    <View style={[styleSheet.lineY, { width: width/1.05,
+                    transform:[
+                        {translateY: width/3.25}]}
+                        ]}
+                    />
+                    <View style={[styleSheet.lineY, { width: width/1.05,
+                    transform:[
+                        {translateY: width/1.52}]}
+                        ]}
+                    />
                 </View>
-            </View>
 
         )
     }
@@ -74,20 +68,16 @@ class Playground extends React.Component {
 
 const styleSheet = StyleSheet.create({
     lineX: {
-        backgroundColor:"#000",
-        height:400,
-        width:10,
-        position:'absolute',
-        top:3,
+        backgroundColor: "#000",
+        width: 10,
+        position: 'absolute',
         borderRadius: 10
     },
     lineY: {
-        backgroundColor:"#000",
-        height:10,
-        width:375,
-        position:'absolute',
-        borderRadius: 10,
-        left:4
+        backgroundColor: "#000",
+        height: 10,
+        position: 'absolute',
+        borderRadius: 10
     }
 });
 
