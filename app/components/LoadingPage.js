@@ -49,16 +49,18 @@ class LoadingPage extends React.Component {
         const {navigator} = this.props;
         setTimeout(() => this.socket.emit('get-game', {name}), 1000);
         this.socket.on('game-ready', gameData => {
-            this.setState({
-                isLoading: false
-            });
-            Vibration.vibrate();
-            navigator.push({
-                id: PLAYGROUND_PAGE,
-                name: PLAYGROUND_PAGE,
-                socket: this.socket,
-                ...gameData
-            });
+            setTimeout(() => {
+                this.setState({
+                    isLoading: false
+                });
+                Vibration.vibrate();
+                navigator.push({
+                    id: PLAYGROUND_PAGE,
+                    name: PLAYGROUND_PAGE,
+                    socket: this.socket,
+                    ...gameData
+                });
+            }, 200);
         });
     }
 

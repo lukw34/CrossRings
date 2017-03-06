@@ -13,8 +13,6 @@ import TurnInfo from './TurnInfo';
 
 import {RESULT_PAGE, START_PAGE} from '../Pages';
 
-let board  = Array(9).fill(null);
-
 class PlaygroundPage extends React.Component {
     constructor(props) {
         super(props);
@@ -22,6 +20,7 @@ class PlaygroundPage extends React.Component {
         this.goToResultPage = this.goToResultPage.bind(this);
         this.handleResign = this.handleResign.bind(this);
         this.onCellClick = this.onCellClick.bind(this);
+        this.calculateWinner = this.calculateWinner.bind(this);
         this.state = {
             actualPlayerId: -1,
             fields: []
@@ -90,39 +89,44 @@ class PlaygroundPage extends React.Component {
         if (isMyTurn) {
             const newFields = [...fields, {key, playerId: id, winner: null}];
             this.setState({
-                fields: this.calculateWinner(newFields)
+                fields: newFields
             });
             if (fields.length >= 8) {
                 socket.emit('completed-draw');
-            }if (fields.winner === true) {
-                socket.emit('completed-winner', {fields: newFields});
-            }else {
-                socket.emit('turn-completed', {fields: this.calculateWinner(newFields)});
-            }
+            } else if ( this.calculateWinner(newFields)) {
+                socket.emit('completed-winner', {id});
+            } else
+                socket.emit('turn-completed', {fields: newFields});
         }
     }
 
-    calculateWinner(newField) {
-        const lines = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6]];
+    calculateWinner(newFields = []) {
+        const winnerCombinations = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6]],
+            {me} = this.props,
+            {id} = me,
+            actualPlayerFieldsKey = newFields
+                .filter(({playerId}) => playerId === id)
+                .map(({key}) => key),
+            checkCombinations = (combination = [], keys = []) => {
+                const matching = keys.filter(val => {
+                    return combination.indexOf(val) !== -1;
+                });
 
-        board[newField.key] = newField.playerId;
+                return matching.length === 3;
+            },
+            foundedWinnerCombinations = winnerCombinations
+                .filter(combination => checkCombinations(combination, actualPlayerFieldsKey));
 
-        for (let i = 0; i < lines.length; i++) {
-            const [a, b, c] = lines[i];
-            if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-                newField.winner = board[a];
-                return newField;
-            }
-        }
-        return newField;
+
+        return foundedWinnerCombinations.length !== 0;
     }
 
     goToResultPage(props) {
