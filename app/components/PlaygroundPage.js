@@ -13,6 +13,8 @@ import TurnInfo from './TurnInfo';
 
 import {RESULT_PAGE, START_PAGE} from '../Pages';
 
+let board  = Array(9).fill(null);
+
 class PlaygroundPage extends React.Component {
     constructor(props) {
         super(props);
@@ -86,18 +88,41 @@ class PlaygroundPage extends React.Component {
             {id} = me,
             isMyTurn = me.id === actualPlayerId;
         if (isMyTurn) {
-            const newFields = [...fields, {key, playerId: id}];
+            const newFields = [...fields, {key, playerId: id, winner: null}];
             this.setState({
-                fields: newFields
+                fields: this.calculateWinner(newFields)
             });
-
             if (fields.length >= 8) {
                 socket.emit('completed-draw');
-            } else {
-                //TODO tu dodaj logike
-                socket.emit('turn-completed', {fields: newFields});
+            }if (fields.winner === true) {
+                socket.emit('completed-winner', {fields: newFields});
+            }else {
+                socket.emit('turn-completed', {fields: this.calculateWinner(newFields)});
             }
         }
+    }
+
+    calculateWinner(newField) {
+        const lines = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]];
+
+        board[newField.key] = newField.playerId;
+
+        for (let i = 0; i < lines.length; i++) {
+            const [a, b, c] = lines[i];
+            if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                newField.winner = board[a];
+                return newField;
+            }
+        }
+        return newField;
     }
 
     goToResultPage(props) {
