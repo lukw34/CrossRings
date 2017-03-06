@@ -24,21 +24,24 @@ class Playground extends React.Component {
 
 
     mapFieldsProp() {
-        const {fields, onCellClick} = this.props;
-        const players = [];
+        const {fields, onCellClick, isMyTurn} = this.props,
+            players = [],
+            cellProps = {
+                isMyTurn,
+                onCellClick,
+                cellSize: this.cellSize
+            };
         fields.forEach(({key, playerId}) => players[key] = playerId);
         return [
-            <Cell key={0} id={0} onCellClick={onCellClick} bottom right cellSize={this.cellSize}
-                  playerId={players[0]}/>,
-            <Cell key={1} id={1} onCellClick={onCellClick} bottom cellSize={this.cellSize} playerId={players[1]}/>,
-            <Cell key={2} id={2} onCellClick={onCellClick} bottom left cellSize={this.cellSize} playerId={players[2]}/>,
-            <Cell key={3} id={3} onCellClick={onCellClick} bottom right cellSize={this.cellSize}
-                  playerId={players[3]}/>,
-            <Cell key={4} id={4} onCellClick={onCellClick} bottom cellSize={this.cellSize} playerId={players[4]}/>,
-            <Cell key={5} id={5} onCellClick={onCellClick} bottom left cellSize={this.cellSize} playerId={players[5]}/>,
-            <Cell key={6} id={6} onCellClick={onCellClick} right cellSize={this.cellSize} playerId={players[6]}/>,
-            <Cell key={7} id={7} onCellClick={onCellClick} cellSize={this.cellSize} playerId={players[7]}/>,
-            <Cell key={8} id={8} onCellClick={onCellClick} left cellSize={this.cellSize} playerId={players[8]}/>
+            <Cell key={0} id={0} {...cellProps} bottom right playerId={players[0]}/>,
+            <Cell key={1} id={1} {...cellProps} bottom playerId={players[1]}/>,
+            <Cell key={2} id={2} {...cellProps} bottom left playerId={players[2]}/>,
+            <Cell key={3} id={3} {...cellProps} bottom right playerId={players[3]}/>,
+            <Cell key={4} id={4} {...cellProps} bottom playerId={players[4]}/>,
+            <Cell key={5} id={5} {...cellProps} bottom left playerId={players[5]}/>,
+            <Cell key={6} id={6} {...cellProps} right playerId={players[6]}/>,
+            <Cell key={7} id={7} {...cellProps} playerId={players[7]}/>,
+            <Cell key={8} id={8} {...cellProps} left playerId={players[8]}/>
         ];
 
     }

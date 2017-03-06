@@ -93,7 +93,7 @@ class PlaygroundPage extends React.Component {
             });
             if (fields.length >= 8) {
                 socket.emit('completed-draw');
-            } else if ( this.calculateWinner(newFields)) {
+            } else if (fields.length > 2 && this.calculateWinner(newFields)) {
                 socket.emit('completed-winner', {id});
             } else
                 socket.emit('turn-completed', {fields: newFields});
@@ -159,12 +159,13 @@ class PlaygroundPage extends React.Component {
 
     renderScene() {
         const {me, opponents} = this.props,
-            {actualPlayerId, fields} = this.state;
+            {actualPlayerId, fields} = this.state,
+            isMyTurn = actualPlayerId === me.id;
 
         return (
             <View>
                 <View >
-                    <Playground onCellClick={this.onCellClick} fields={fields} size={3}/>
+                    <Playground isMyTurn={isMyTurn} onCellClick={this.onCellClick} fields={fields} size={3}/>
                 </View>
                 <View style={{
                     marginBottom: 20,

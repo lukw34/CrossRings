@@ -16,6 +16,7 @@ class Cell extends React.Component {
         this.borderWidth = 8;
         this.getBorderStyle = this.getBorderStyle.bind(this);
         this.getIcon = this.getIcon.bind(this);
+        this.getColor = this.getColor.bind(this);
         this.handleCellClick = this.handleCellClick.bind(this);
     }
 
@@ -51,29 +52,50 @@ class Cell extends React.Component {
         if (playerId === 1) {
             return 'close';
         }
+
+        return 'lock';
+    }
+
+    getColor() {
+        const {playerId} = this.props;
+
+        if (playerId === 0) {
+            return '#3F51B5';
+        }
+
+        if (playerId === 1) {
+            return '#F44336';
+        }
+
+        return '#fff';
     }
 
     handleCellClick() {
         const {playerId, onCellClick, id} = this.props;
-        if(!playerId) {
+        if (!playerId) {
             onCellClick(id);
         }
     }
 
     render() {
-        const {cellSize} = this.props,
+        const {cellSize, isMyTurn} = this.props,
             border = this.getBorderStyle(),
-            icon = this.getIcon();
+            icon = isMyTurn ? this.getIcon() : 'lock',
+            color = this.getColor();
         return (
             <TouchableWithoutFeedback onPress={this.handleCellClick}>
-                <View style={{
+                <View style={[{
                     justifyContent: 'center',
                     height: cellSize,
                     width: cellSize - 10,
-                    borderColor: '#000000',
+                    backgroundColor: '#000',
+                    borderColor: '#fff',
                     ...border
-                }}>
-                    {icon ? <Icon name={icon} style={{alignSelf: 'center'}} size={80}/> : null}
+                }, isMyTurn && {
+                    borderColor: '#000000',
+                    backgroundColor: '#fff'
+                }]}>
+                    {icon ? <Icon name={icon} color={color} style={{alignSelf: 'center'}} size={80}/> : null}
                 </View>
 
             </TouchableWithoutFeedback>
