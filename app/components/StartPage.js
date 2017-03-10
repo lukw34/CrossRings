@@ -79,6 +79,7 @@ class StartPage extends React.Component {
     }
 
     renderScene() {
+        console.log('test');
         const {userName} = this.state,
             isDisabled = userName.length === 0;
         return (

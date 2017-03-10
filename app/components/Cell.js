@@ -97,7 +97,6 @@ class Cell extends React.Component {
                 }]}>
                     {icon ? <Icon name={icon} color={color} style={{alignSelf: 'center'}} size={80}/> : null}
                 </View>
-
             </TouchableWithoutFeedback>
         )
     }
