@@ -3,10 +3,10 @@
 ###1.Description.
 Mobile application, which simulate cross and circle game. Game  connect you
 with random opponent. It's real time application. Application was written completely in Java Scrip.
-Main tool was **react-native**. Communication between players is provided by [MatchUpGenerator]().
+Main tool was **react-native**. Communication between players is provided by [MatchUpGenerator](https://github.com/lukw34/MatchUpGenerator).
 
 ###2. Installation and running.
- - You have to install [react-native](https://github.com/lukw34/MatchUpGenerator).
+ - You have to install [react-native](https://facebook.github.io/react-native/).
  - In project directory run installation of dependencies
 
 ```bash 
